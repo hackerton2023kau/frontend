@@ -5,7 +5,6 @@ import KeywordsResult from './components/keywordsResult';
 import QuestionResult from './components/questionResult';
 import UseKeywords from './components/useKeywords';
 import UseQuestion from './components/useQuestion';
-import './App.css';
 
 function App() {
   return (
