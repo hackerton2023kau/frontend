@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import {React, useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom" ;
 import axios from 'axios';
 const ALLOW_FILE_EXTENSION = "jpg,jpeg,png"; // 허용가능한 확장자 목록!
@@ -8,8 +8,15 @@ import '../App.css';
 const UseQuestion = () =>{
     const [file, setFile] = useState();
     const [answer, setAnswer] = useState(0);
-    const postPic = 'http://3.27.44.134:7777/ImageSend/detect'; // 사진전송 api
+    const postPic = "http://172.16.172.11:7777/ImageSend/detect"; // 사진전송 api
     const navigate = useNavigate();
+
+
+
+    
+
+      
+
 
     const onSaveFiles = (e) => {
         const target = e.currentTarget;
@@ -21,13 +28,32 @@ const UseQuestion = () =>{
         setFile(files);
         setAnswer(1);
     };
-    
+    /*
+
+    let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: 'http://localhost:7777/ImageSend/detect',
+        headers: { 
+          ...data.getHeaders()
+        },
+        file : file
+      };
+      
+      axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });*/
+
     const fileUploadHandler = async () => {
         if(file !== undefined) {
             try{
                 // !!중요1. formData활용!!
                 const formData = new FormData();
-                formData.append('multipartFile', file);
+                formData.append('file', file);
 
                 const commuDto = JSON.stringify({
                 "title": 0,
@@ -44,8 +70,8 @@ const UseQuestion = () =>{
                 for (let value of formData.values()) {
                     console.log(value);
                 }
-                /*
-                const axiosResponse = await axios.post(postPic, formData)
+                
+                const axiosResponse = await axios.post(postPic, formData);
                 
                 // HttpStatus가 200번호 구역이 아니거나
                 if(axiosResponse.status < 200 || axiosResponse.status >= 300 ){
@@ -54,8 +80,10 @@ const UseQuestion = () =>{
                     throw Error(axiosResponse.data.message || "문제가 발생했어요!");
                 }
                     // 파일 업로드 성공!
+                console.log("dd");    
                 alert(' 완료!');
-                console.log(axiosResponse.data.data);*/
+                console.log(axiosResponse.data);
+                
 
                 navigate(`/questionResult`,  { replace: true, state: { value: 1234, file: file} }); //결과
             } 
@@ -76,7 +104,7 @@ const UseQuestion = () =>{
                         <img style={{width:"50px", height:"50px"}} src="https://cdn.icon-icons.com/icons2/1471/PNG/512/12-file_101194.png"/>
                         <br/>
                         <label htmlFor="file">
-                            <div className="btn-upload">파일 업로드</div>
+                            {answer ? <div></div> : <div className="btn-upload">파일 업로드</div>}
                         </label>
                         <input type="file" id="file" onChange={onSaveFiles}></input>
                         <br/>

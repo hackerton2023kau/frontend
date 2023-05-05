@@ -9,7 +9,7 @@ const QuestionResult = () =>{
     //이전페이지에서 답안도 받아야됨 api 가따가
     const [imageSrc, setImageSrc] = useState('');
     const [showAns, setShowAns] = useState(0); // 1이면 보이기, 0이면 답안 숨기기
-    const [getAns, setGetAns] = useState(0); // 1면 map
+    const [getAns, setGetAns] = useState(0); // true면 map
     const [answerList, setAnswerList] = useState([
         {
           pic: '',
@@ -34,12 +34,10 @@ const QuestionResult = () =>{
         setGetAns(getAns+1);
         //api
         setAnswerList(answerList => [...answerList, answerList]);
-        console.log("dd");
     }
 
     useEffect(() => {
         console.log(file);
-        console.log('컴포넌트가 화면에 나타남');
         setImageSrc(URL.createObjectURL(file));
       }, []);
 
@@ -49,7 +47,7 @@ const QuestionResult = () =>{
         <div className='container'>
             <div className='q-section'>
                 <div className='result-usepic-title'>
-                    문제
+                    Question.
                 </div>
                 <div className='result-usepic'>
                     <img style={{width:"75%", height:"500px"}} src={imageSrc} alt="preview-img" />
@@ -65,11 +63,12 @@ const QuestionResult = () =>{
                 </div>
                 {getAns ? answerList.map(item =>
                     <div key={item.pic}>
+                        <hr></hr>
                         <div className='result-usepic-title'>
-                            문제
+                            Question.
                         </div>
-                        <div className='result-usepic'>
-                            <img style={{width:"75%", height:"500px"}} src={imageSrc} alt="preview-img" />
+                        <div className='result-usepic2'>
+                            글로올거아냐ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
                         </div>
                         <div className='result-usepic-answer'>
                             {showAns ? <button onClick={answerHandler}>▶ 숨기기</button> : <button onClick={answerHandler}>▼ 답안보기</button>}
