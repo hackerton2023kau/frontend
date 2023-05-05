@@ -6,6 +6,7 @@ import QuestionResult from './components/questionResult';
 import UseKeywords from './components/useKeywords';
 import UseQuestion from './components/useQuestion';
 
+
 function App() {
   return (
     <div className="App">
@@ -16,6 +17,7 @@ function App() {
           <Route exact path="/questionResult" element={<QuestionResult />} />
           <Route exact path="/useKeywords" element={<UseKeywords />} />
           <Route exact path="/useQuestion" element={<UseQuestion />} />
+          <Route exact path="/test" element={<UseQuestion />} />
         </Routes>
       </BrowserRouter>
     </div>
