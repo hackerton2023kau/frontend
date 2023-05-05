@@ -4,6 +4,7 @@ import {Link} from "react-router-dom" ;
 const QuestionResult = () =>{
     return (
         <div className='container'>
+            
         </div>
     )
 
