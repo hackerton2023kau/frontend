@@ -1,44 +1,69 @@
 import {React, useState} from 'react';
-import {Link} from "react-router-dom" ;
+import {Link, useNavigate} from "react-router-dom" ;
+import axios from 'axios';
 const ALLOW_FILE_EXTENSION = "jpg,jpeg,png"; // 허용가능한 확장자 목록!
 const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;  // 5MB
 import '../App.css';
 
 const UseQuestion = () =>{
     const [file, setFile] = useState();
-    const [answer, setAnswer] = (1);
-
-    const formData = new FormData();
-    const contentsData = {
-
-    }
-    const fileList = []; // 업로드한 파일들을 저장하는 배열
+    const [answer, setAnswer] = useState(0);
+    const postPic = 'http://3.27.44.134:7777/ImageSend/detect'; // 사진전송 api
+    const navigate = useNavigate();
 
     const onSaveFiles = (e) => {
-        const uploadFiles = Array.prototype.slice.call(e.target.files); // 파일선택창에서 선택한 파일들
+        const target = e.currentTarget;
+        const files = (target.files)[0];
 
-        uploadFiles.forEach((uploadFile) => {
-            fileList.push(uploadFile);
-        });
-
+        if(files === undefined) {
+            return ;
+        }
+        setFile(files);
+        setAnswer(1);
     };
     
-    const onFileUpload = () => {
-        const formData = new FormData();
+    const fileUploadHandler = async () => {
+        if(file !== undefined) {
+            try{
+                // !!중요1. formData활용!!
+                const formData = new FormData();
+                formData.append('multipartFile', file);
 
-        formData.append('multipartFiles', file);
+                const commuDto = JSON.stringify({
+                "title": 0,
+                "content": 0,
+                "userId": 0
+                });
 
-        // 객체
-        const foodDto = {
-            name: '피자',
-            price: 13500,
-        };
+                //console.log(file);
+                //formData.append('communityWritingReqDto', commuDto);
 
-        formData.append('stringFoodDto', JSON.stringify(foodDto)); // 직렬화하여 객체 저장
+                for (let key of formData.keys()) {
+                    console.log(key);
+                }
+                for (let value of formData.values()) {
+                    console.log(value);
+                }
+                /*
+                const axiosResponse = await axios.post(postPic, formData)
+                
+                // HttpStatus가 200번호 구역이 아니거나
+                if(axiosResponse.status < 200 || axiosResponse.status >= 300 ){
+                    // Error를 발생시켜 Catch문을 타게 만들어주는데, 서버에 응답받은 메시지를 넣어준다!
+                    // 서버에서 응답 메시지를 받지 못했을경우 기본 메시지 설정또한 함께 해준다
+                    throw Error(axiosResponse.data.message || "문제가 발생했어요!");
+                }
+                    // 파일 업로드 성공!
+                alert(' 완료!');
+                console.log(axiosResponse.data.data);*/
 
-        console.log(formData);
-        //axios.post('http://localhost:8080/uploadFiles', formData);
-
+                navigate(`/questionResult`,  { replace: true, state: { value: 1234, file: file} }); //결과
+            } 
+            catch(e) {
+                console.error(e);
+                alert((e).message);
+            }
+        }
     };
 
     return (
@@ -50,12 +75,12 @@ const UseQuestion = () =>{
                     <div className='filebox'>
                         <img style={{width:"50px", height:"50px"}} src="https://cdn.icon-icons.com/icons2/1471/PNG/512/12-file_101194.png"/>
                         <br/>
-                        <label for="file">
+                        <label htmlFor="file">
                             <div className="btn-upload">파일 업로드</div>
                         </label>
-                        <input type="file" id="file" onChange={onSaveFiles} onClick={onFileUpload}></input>
-                        
-                        {answer ? <button onClick={onFileUpload}>정답보기</button> : <div> </div>}
+                        <input type="file" id="file" onChange={onSaveFiles}></input>
+                        <br/>
+                        {answer ? <button onClick={fileUploadHandler}>정답보기</button> : <div> </div>}
                     </div>
                 </div>
             </div>
