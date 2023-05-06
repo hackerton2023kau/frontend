@@ -1,6 +1,7 @@
 import {React, useEffect, useState} from 'react';
 import {Link, useNavigate} from "react-router-dom" ;
 import axios from 'axios';
+import Loading from './Loading.js';
 const ALLOW_FILE_EXTENSION = "jpg,jpeg,png"; // 허용가능한 확장자 목록!
 const FILE_SIZE_MAX_LIMIT = 5 * 1024 * 1024;  // 5MB
 import '../App.css';
@@ -8,10 +9,12 @@ import '../App.css';
 const UseQuestion = () =>{
     const [file, setFile] = useState();
     const [answer, setAnswer] = useState(0);
-    const postPic = "/ImageSend/detect"; // 사진전송 api
-    const testapi = "/getList/QtoQList";
+    const postPic = "/ImageSend/detect"; // 사진전송 문제답 둘다 api
+    const testapi = "/ImageSend/justAnswer"; // 사진전송답만반응 api
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    let a, qeustion, qanswer;
 
 
     const onSaveFiles = (e) => {
@@ -25,59 +28,15 @@ const UseQuestion = () =>{
         setAnswer(1);
     };
 
-    const fileUploadHandler = async () => {
-        const formData = new FormData();
-        formData.append('file', file);
 
-        for (let key of formData.keys()) {
-            console.log(key);
-        }
-        for (let value of formData.values()) {
-            console.log(value);
-        }
-
-        const axiosResponse = await axios.post(postPic, formData)
-            .then(res=>{
-            console.log(res);
-        }).catch(error=>{
-            console.log(error);
-        });
-        console.log(axiosResponse);
-    }
-    useEffect(()  => {
-        
-        const axiosResponse =  axios.get(testapi)
-            .then(res=>{
-            console.log(res);
-        }).catch(error=>{
-            console.log(error);
-        });
-        console.log(axiosResponse);
-      }, []);
-/*
-    useEffect(()  => {
-        
-        const axiosResponse =  axios.get(testapi)
-            .then(res=>{
-            console.log(res);
-        }).catch(error=>{
-            console.log(error);
-        });
-        console.log(axiosResponse);
-      }, []);
 
     const fileUploadHandler = async () => {
         if(file !== undefined) {
             try{
+                setLoading(true);
                 // !!중요1. formData활용!!
                 const formData = new FormData();
                 formData.append('file', file);
-
-                const commuDto = JSON.stringify({
-                "title": 0,
-                "content": 0,
-                "userId": 0
-                });
 
                 //console.log(file);
                 //formData.append('communityWritingReqDto', commuDto);
@@ -89,47 +48,34 @@ const UseQuestion = () =>{
                     console.log(value);
                 }
                 
-                const axiosResponse = await axios.post(postPic, formData)
+                const axiosResponse = await axios.post(testapi, formData)
                 .then(res=>{
                     console.log(res);
+                    a = res.data.data.choices[0].text;
                 }).catch(error=>{
                     console.log(error);
                 });
-                console.log(axiosResponse);
-                // HttpStatus가 200번호 구역이 아니거나
-                if(axiosResponse.status < 200 || axiosResponse.status >= 300 ){
-                    // Error를 발생시켜 Catch문을 타게 만들어주는데, 서버에 응답받은 메시지를 넣어준다!
-                    // 서버에서 응답 메시지를 받지 못했을경우 기본 메시지 설정또한 함께 해준다
-                    throw Error(axiosResponse.data.message || "문제가 발생했어요!");
-                }
                     // 파일 업로드 성공!
-                console.log("dd");    
                 alert(' 완료!');
-                console.log(axiosResponse.data);
-                const response = { 
-                    data: {
-                      id: 1,
-                      name: 'John',
-                      age: 30
-                    }
-                };
-                  
-                const data = response.data;
-                const entries = Object.entries(data); // entries = [['id', 1], ['name', 'John'], ['age', 30]]
-                const extractedData = entries.map(([key, value]) => {
-                    return { key, value };
-                }); // extractedData = [{ key: 'id', value: 1 }, { key: 'name', value: 'John' }, { key: 'age', value: 30 }]
-                navigate(`/questionResult`,  { replace: true, state: { value: 1234, file: file} }); //결과
+                console.log(a);
+                const splitString = a.split('\n\n');
+                //qeustion = splitString[1].split(' : ')[1];
+                //qanswer = splitString[2].split(' : ')[1];
+              
+                console.log(splitString);
+                setLoading(false);
+                navigate(`/questionResult`,  { replace: true, state: { a: splitString, file: file} }); //결과
             } 
             catch(e) {
                 console.error(e);
                 alert((e).message);
             }
         }
-    };*/
+    };
 
     return (
         <div className='container'>
+            {loading ? <Loading /> : null}
             <div className='q-container'>
                 <div className='question-container'>
                     <br/>
