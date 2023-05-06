@@ -76,7 +76,7 @@ const UsePicKeywords = () =>{
             <div className='q-container'>
                 <div className='question-container'>
                     <br/>
-                    <p className='title-q'>문제를 첨부하세요</p>
+                    <p className='title-q'>새로운 문제를 만들어 드릴게요</p>
                     <div className='filebox'>
                         <img style={{width:"50px", height:"50px"}} src="https://cdn.icon-icons.com/icons2/1471/PNG/512/12-file_101194.png"/>
                         <br/>

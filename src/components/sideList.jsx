@@ -10,7 +10,13 @@ const SideList = () => {
     const generatePage = (ListK, ListQ) => {
         const newElement = (
             <div>
-                {ListK.map((item, index) => (
+                최근 문제 생성
+                {ListK.slice(0, 5).map((item, index) => (
+                    <div className='content-side' key={index}>
+                        <p>{item.answer.slice(0, 30)+ "..."}</p>
+                    </div>
+                ))}
+                {ListQ.slice(0, 5).map((item, index) => (
                     <div className='content-side' key={index}>
                         <p>{item.answer.slice(0, 30)+ "..."}</p>
                     </div>
@@ -25,7 +31,8 @@ const SideList = () => {
             try {
                 const res1 = await axios.get(getListK);
                 const res2 = await axios.get(getListQ);
-
+                console.log(res1)
+                console.log(res2)
                 const ListK = res1.data.data.map((item) => ({
                     question: item.generated_question,
                     answer: item.generated_answer,
@@ -36,7 +43,7 @@ const SideList = () => {
                     answer: item.generated_answer,
                 }));
 
-                for (let i = 0; i < 10; i++) {
+                for (let i = 0; i <10;  i++) {
                     ListK[i].question = ListK[i].question.length > 10 ? ListK[i].question.slice(0, 5) + '…' : ListK[i].question;
                     ListQ[i].question = ListQ[i].question.length > 10 ? ListQ[i].question.slice(0, 5) + '…' : ListQ[i].question;
                 }
