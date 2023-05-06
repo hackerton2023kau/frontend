@@ -16,6 +16,9 @@ const Main = () =>{
             <div className='third-question'>
                 <Link to="/usePicKeywords"><button>키워드 사진</button></Link>
             </div>
+            <div className='first-question'>
+                <Link to="/contact"><button>면접</button></Link>
+            </div>
         </div>
     )
 
