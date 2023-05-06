@@ -5,6 +5,7 @@ import KeywordsResult from './components/keywordsResult';
 import QuestionResult from './components/questionResult';
 import UseKeywords from './components/useKeywords';
 import UseQuestion from './components/useQuestion';
+import UsePicKeywords from './components/usePicKeywords';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
           <Route exact path="/useKeywords" element={<UseKeywords />} />
           <Route exact path="/useQuestion" element={<UseQuestion />} />
           <Route exact path="/test" element={<UseQuestion />} />
+          <Route exact path="/usePicKeywords" element={<UsePicKeywords />} />
         </Routes>
       </BrowserRouter>
     </div>

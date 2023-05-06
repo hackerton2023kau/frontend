@@ -2,9 +2,35 @@
   text-align: center;
 }
 .container{
+}
+/* -----------------------sidebar-------------------- */
+.sidebar-container{
+  border: 1px solid #747474;
+  width: 150px;
+  margin-left: 10%;
   
 }
 
+
+/* -----------------------spinner-------------------- */
+.spinner-b{
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: #ffffffb7;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.LoadingText{
+  font: 1rem 'Noto Sans KR';
+  text-align: center;
+}
 /* -----------------------useQuestion-------------------- */
 
 .title-q{
