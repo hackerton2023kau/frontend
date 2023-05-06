@@ -2,9 +2,14 @@
   text-align: center;
 }
 .container{
+}
+/* -----------------------sidebar-------------------- */
+.sidebar-container{
+  border: 1px solid #747474;
+  width: 150px;
+  margin-left: 10%;
   
 }
-
 
 
 /* -----------------------spinner-------------------- */
