@@ -8,14 +8,10 @@ import '../App.css';
 const UseQuestion = () =>{
     const [file, setFile] = useState();
     const [answer, setAnswer] = useState(0);
-    const postPic = "http://172.16.172.11:7777/ImageSend/detect"; // 사진전송 api
+    const postPic = "/ImageSend/detect"; // 사진전송 api
+    const testapi = "/getList/QtoQList";
     const navigate = useNavigate();
 
-
-
-    
-
-      
 
 
     const onSaveFiles = (e) => {
@@ -28,25 +24,47 @@ const UseQuestion = () =>{
         setFile(files);
         setAnswer(1);
     };
-    /*
 
-    let config = {
-        method: 'post',
-        maxBodyLength: Infinity,
-        url: 'http://localhost:7777/ImageSend/detect',
-        headers: { 
-          ...data.getHeaders()
-        },
-        file : file
-      };
-      
-      axios.request(config)
-      .then((response) => {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch((error) => {
-        console.log(error);
-      });*/
+    const fileUploadHandler = async () => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        for (let key of formData.keys()) {
+            console.log(key);
+        }
+        for (let value of formData.values()) {
+            console.log(value);
+        }
+
+        const axiosResponse = await axios.post(postPic, formData)
+            .then(res=>{
+            console.log(res);
+        }).catch(error=>{
+            console.log(error);
+        });
+        console.log(axiosResponse);
+    }
+    useEffect(()  => {
+        
+        const axiosResponse =  axios.get(testapi)
+            .then(res=>{
+            console.log(res);
+        }).catch(error=>{
+            console.log(error);
+        });
+        console.log(axiosResponse);
+      }, []);
+/*
+    useEffect(()  => {
+        
+        const axiosResponse =  axios.get(testapi)
+            .then(res=>{
+            console.log(res);
+        }).catch(error=>{
+            console.log(error);
+        });
+        console.log(axiosResponse);
+      }, []);
 
     const fileUploadHandler = async () => {
         if(file !== undefined) {
@@ -71,8 +89,13 @@ const UseQuestion = () =>{
                     console.log(value);
                 }
                 
-                const axiosResponse = await axios.post(postPic, formData);
-                
+                const axiosResponse = await axios.post(postPic, formData)
+                .then(res=>{
+                    console.log(res);
+                }).catch(error=>{
+                    console.log(error);
+                });
+                console.log(axiosResponse);
                 // HttpStatus가 200번호 구역이 아니거나
                 if(axiosResponse.status < 200 || axiosResponse.status >= 300 ){
                     // Error를 발생시켜 Catch문을 타게 만들어주는데, 서버에 응답받은 메시지를 넣어준다!
@@ -83,8 +106,19 @@ const UseQuestion = () =>{
                 console.log("dd");    
                 alert(' 완료!');
                 console.log(axiosResponse.data);
-                
-
+                const response = { 
+                    data: {
+                      id: 1,
+                      name: 'John',
+                      age: 30
+                    }
+                };
+                  
+                const data = response.data;
+                const entries = Object.entries(data); // entries = [['id', 1], ['name', 'John'], ['age', 30]]
+                const extractedData = entries.map(([key, value]) => {
+                    return { key, value };
+                }); // extractedData = [{ key: 'id', value: 1 }, { key: 'name', value: 'John' }, { key: 'age', value: 30 }]
                 navigate(`/questionResult`,  { replace: true, state: { value: 1234, file: file} }); //결과
             } 
             catch(e) {
@@ -92,7 +126,7 @@ const UseQuestion = () =>{
                 alert((e).message);
             }
         }
-    };
+    };*/
 
     return (
         <div className='container'>
