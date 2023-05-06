@@ -1,4 +1,5 @@
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Main from './components/main';
 import KeywordsResult from './components/keywordsResult';
@@ -7,10 +8,11 @@ import UseKeywords from './components/useKeywords';
 import UseQuestion from './components/useQuestion';
 import UsePicKeywords from './components/usePicKeywords';
 import Contact from './components/contact';
-
+import Navigation from './components/navigation';
 function App() {
   return (
     <div className="App">
+      <Navigation/>
       <BrowserRouter>
         <Routes>
           <Route exact path="/" element={<Main />} />
